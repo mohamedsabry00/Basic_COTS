@@ -170,7 +170,12 @@ uint8 EXTI_u8DisableIntChannel(IntChannel_t Copy_IntCh){
 uint8 EXTI_u8SetCallBack(IntChannel_t Copy_IntCh, void(*Copy_pvCallBackFunc)(void)){
 	uint8 Local_u8ErrorState = OK;
 	if(Copy_pvCallBackFunc != NULL){
-		EXTI_pvCallBack[Copy_IntCh] = Copy_pvCallBackFunc;
+		if((Copy_IntCh == INT0) || (Copy_IntCh == INT1) || (Copy_IntCh == INT2)){
+			EXTI_pvCallBack[Copy_IntCh] = Copy_pvCallBackFunc;
+		}
+		else{
+			Local_u8ErrorState = NOK;
+		}
 	}
 	else{
 		Local_u8ErrorState = NULL_PTR_ERR;
@@ -185,18 +190,18 @@ __attribute__((signal)) void __vector_1(void);
 __attribute__((signal)) void __vector_2(void);
 __attribute__((signal)) void __vector_3(void);
 
-void __vector_1(void){
+void __vector_1(void){ /*External Interrupt INT0 ISR*/
 	if(EXTI_pvCallBack[INT0] != NULL){
 		EXTI_pvCallBack[INT0]();
 	}
 }
 void __vector_2(void){
-	if(EXTI_pvCallBack[INT1] != NULL){
+	if(EXTI_pvCallBack[INT1] != NULL){/*External Interrupt INT1 ISR*/
 		EXTI_pvCallBack[INT1]();
 	}
 }
 void __vector_3(void){
-	if(EXTI_pvCallBack[INT2] != NULL){
+	if(EXTI_pvCallBack[INT2] != NULL){/*External Interrupt INT2 ISR*/
 		EXTI_pvCallBack[INT2]();
 	}
 }
