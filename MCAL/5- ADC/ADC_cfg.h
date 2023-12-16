@@ -18,4 +18,8 @@
 
 #define ADC_u8RESOLUTION							TEN_BITS
 
+/*configure the timeout*/
+#define ADC_u32TIMEOUT								50000u
+
+
 #endif
